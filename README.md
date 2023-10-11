@@ -9,4 +9,7 @@ A mod to allow server stats to be shown in game
 - Rename the folder to uptime_stats or something else without \-
 - Copy the folder into the mods directory
 
-#### Dependencies
+### Dependencies (Install these first)
+- digilines
+- mesecons (optional)
+- digistuff (optional)
