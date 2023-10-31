@@ -1,11 +1,9 @@
  local getCommand = "GET"
- local receiveChannel = "update_stats" -- default channel
-print(os.time())
- -- print("we are loaded")
 
  -- called when message is recieved
  
 local on_digiline_receive = function (pos, _, channel, msg) 
+	local receiveChannel = minetest.get_meta(pos):get_string("channel")
     if channel == receiveChannel and msg == getCommand then -- check if it is the right message and channel
         -- print("uptime requested")
         local uptimeraw = minetest.get_server_uptime()
@@ -44,13 +42,14 @@ minetest.register_node("uptime_stats:stat_block", { --register the node
 	},
     after_place_node = function(pos, placer)
 		local meta = minetest.get_meta(pos)
+		meta:set_string("channel", "uptime")
 		meta:set_string("formspec",
 				"size[10,10]"..
 				"label[4,4;Channel]".. -- this is just a text label
-                "field[2,5;6,1;chnl;;]".. -- this is just the text entry box
+                "field[2,5;6,1;chnl;;${channel}]".. -- this is just the text entry box 
                 "button_exit[4,6;2,1;exit;Save]") -- submit button, triggers on_receive_fields
 	end,
     on_receive_fields = function(pos, formname, fields, player) -- to do: implement security
-        receiveChannel = fields.chnl --set the channel
+        minetest.get_meta(pos):set_string("channel", fields.chnl)
     end
 })
