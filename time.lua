@@ -9,15 +9,15 @@ local on_digiline_receive = function (pos, _, channel, msg)
 end
 
 
-minetest.register_node("uptime_stats:time_block", { --register the node
+minetest.register_node("stats:time_block", { --register the node
 	description = "This block gets current time in seconds",
 	tiles = {
-		"blank_black.png",
-		"blank_black.png",
-		"time.png",
-		"time.png",
-		"time.png",
-		"time.png"
+		"stats_black.png",
+		"stats_black.png",
+		"stats_time.png",
+		"stats_time.png",
+		"stats_time.png",
+		"stats_time.png"
 	},
         groups = {dig_immediate=2},
         digilines = -- I don't rememeber why this is
@@ -29,7 +29,7 @@ minetest.register_node("uptime_stats:time_block", { --register the node
 	},
     after_place_node = function(pos, placer)
 		local meta = minetest.get_meta(pos)
-		meta:set_string("channel", "uptime")
+		meta:set_string("channel", "")
 		meta:set_string("formspec",
 				"size[10,10]"..
 				"label[4,4;Channel]".. -- this is just a text label

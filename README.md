@@ -1,6 +1,6 @@
 ![screenshot](screenshot.png)
 
-# Minetest Uptime Stats
+# Minetest Stats
 A mod to allow real world data to be shown in game. It has the following blocks:
 
 - server uptime block
@@ -10,6 +10,10 @@ A mod to allow real world data to be shown in game. It has the following blocks:
 - Uptime formatter block
 
 - Time formatter block
+
+- Positon block
+
+- 
 
 ## Status
 - This Mod is a work in progress and is Alpha quality

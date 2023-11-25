@@ -1,29 +1,28 @@
-local getCommand = "GET"
-
- -- called when message is recieved
- 
 local on_digiline_receive = function (pos, _, channel, msg) 
 	local receiveChannel = minetest.get_meta(pos):get_string("channel")
     if channel == receiveChannel then -- check if it is the right message and channel
-    	if not (tonumber(msg) == nil) then -- validate input
-	    	local time = math.round(msg) -- round to the nearest second
-		local timeMessage = ""
-		--this is where the formatted time string will go
-		--incoming: time, return: timeMessage
-		digilines.receptor_send(pos, digilines.rules.default, receiveChannel, timeMessage) -- send formatted version
+    	local players = {}
+    	local string = ""
+    	for w in msg:gmatch("%w+") do
+    		table.insert(players, w)
+    	end
+    	for _, playerName in ipairs(players) do 
+        	string = string.." "..tostring(get_playerpos(playerName))
 	end
+	digilines.receptor_send(pos, digilines.rules.default, receiveChannel, string) -- send position of player msg
     end
 end
 
-minetest.register_node("stats:time_formatter_block", { --register the node
-	description = "This block takes UNIX time in seconds and converts it to human readable form",
+
+minetest.register_node("stats:position_block", { --register the node
+	description = "This block gets a players position from a players name",
 	tiles = {
-		"stats_brown.png",
-		"stats_black.png",
-		"stats_tf.png",
-		"stats_tf.png",
-		"stats_tf.png",
-		"stats_tf.png"
+		"stats_white.png",
+		"stats_white.png",
+		"stats_pos.png",
+		"stats_pos.png",
+		"stats_pos.png",
+		"stats_pos.png"
 	},
         groups = {dig_immediate=2},
         digilines = -- I don't rememeber why this is
@@ -35,7 +34,7 @@ minetest.register_node("stats:time_formatter_block", { --register the node
 	},
     after_place_node = function(pos, placer)
 		local meta = minetest.get_meta(pos)
-		meta:set_string("channel", "uptime")
+		meta:set_string("channel", "")
 		meta:set_string("formspec",
 				"size[10,10]"..
 				"label[4,4;Channel]".. -- this is just a text label
@@ -46,4 +45,15 @@ minetest.register_node("stats:time_formatter_block", { --register the node
         minetest.get_meta(pos):set_string("channel", fields.chnl)
     end
 })
+
+
+--gets player's current position when function is called
+function get_playerpos(player)
+	local playerobj = minetest.get_player_by_name(player)
+	if playerobj then
+		return vector.round(playerobj:get_pos())
+	else 
+		return "not found"
+	end
+end
 

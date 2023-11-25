@@ -1,23 +1,32 @@
 local getCommand = "GET"
 
- -- called when message is recieved
- 
+
 local on_digiline_receive = function (pos, _, channel, msg) 
 	local receiveChannel = minetest.get_meta(pos):get_string("channel")
     if channel == receiveChannel and msg == getCommand then -- check if it is the right message and channel
-        digilines.receptor_send(pos, digilines.rules.default, receiveChannel, math.round(minetest.get_server_uptime())) -- send uptime
+    	local playerString = ""
+    	local playerTable = minetest.get_connected_players()
+    	for _, player in ipairs(playerTable) do
+    		if not playerString  == "" then
+    			playerString = playerString.." "..player:get_player_name()
+    		else 
+    			playerString = player:get_player_name()
+    		end
+    	end
+        digilines.receptor_send(pos, digilines.rules.default, receiveChannel, playerString) -- send time
     end
 end
 
-minetest.register_node("stats:uptime_block", { --register the node
-	description = "This block gets the server uptime in seconds",
+
+minetest.register_node("stats:players_block", { --register the node
+	description = "This block gets all players as a string",
 	tiles = {
-		"stats_red.png",
 		"stats_black.png",
-		"stats_uptime.png",
-		"stats_uptime.png",
-		"stats_uptime.png",
-		"stats_uptime.png"
+		"stats_black.png",
+		"stats_players.png",
+		"stats_players.png",
+		"stats_players.png",
+		"stats_players.png"
 	},
         groups = {dig_immediate=2},
         digilines = -- I don't rememeber why this is
