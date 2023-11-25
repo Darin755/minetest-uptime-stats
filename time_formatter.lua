@@ -35,7 +35,7 @@ minetest.register_node("stats:time_formatter_block", { --register the node
 	},
     after_place_node = function(pos, placer)
 		local meta = minetest.get_meta(pos)
-		meta:set_string("channel", "uptime")
+		meta:set_string("channel", "")
 		meta:set_string("formspec",
 				"size[10,10]"..
 				"label[4,4;Channel]".. -- this is just a text label
