@@ -4,19 +4,18 @@ local getCommand = "GET"
  
 local on_digiline_receive = function (pos, _, channel, msg) 
 	local receiveChannel = minetest.get_meta(pos):get_string("channel")
+	local formatString = minetest.get_meta(pos):get_string("formatString")
     if channel == receiveChannel then -- check if it is the right message and channel
     	if not (tonumber(msg) == nil) then -- validate input
 	    	local time = math.round(msg) -- round to the nearest second
-		local timeMessage = ""
-		--this is where the formatted time string will go
-		--incoming: time, return: timeMessage
-		digilines.receptor_send(pos, digilines.rules.default, receiveChannel, timeMessage) -- send formatted version
+		local uptimeMessage = processString(formatString, time)
+		digilines.receptor_send(pos, digilines.rules.default, receiveChannel, uptimeMessage) -- send formatted version
 	end
     end
 end
 
 minetest.register_node("stats:time_formatter_block", { --register the node
-	description = "This block takes UNIX time in seconds and converts it to human readable form",
+	description = "This block takes UNIX time in seconds and converts it to human readable form with the format spec",
 	tiles = {
 		"stats_brown.png",
 		"stats_black.png",
@@ -36,14 +35,21 @@ minetest.register_node("stats:time_formatter_block", { --register the node
     after_place_node = function(pos, placer)
 		local meta = minetest.get_meta(pos)
 		meta:set_string("channel", "")
+		meta:set_string("formatString", "%H:%M")
 		meta:set_string("formspec",
 				"size[10,10]"..
-				"label[4,4;Channel]".. -- this is just a text label
-                "field[2,5;6,1;chnl;;${channel}]".. -- this is just the text entry box 
+				"label[4,2;Channel]".. -- this is just a text label
+                "field[2,3;6,1;chnl;;${channel}]".. -- this is just the text entry box 
+                		"label[4,4;format string]".. -- this is just a text label
+                "field[2,5;6,1;formatString;;${formatString}]".. -- this is just the format string
                 "button_exit[4,6;2,1;exit;Save]") -- submit button, triggers on_receive_fields
 	end,
     on_receive_fields = function(pos, formname, fields, player) -- to do: implement security
         minetest.get_meta(pos):set_string("channel", fields.chnl)
+        minetest.get_meta(pos):set_string("formatString", fields.formatString)
     end
 })
 
+function processString(formatString, msg)   -- format specifer followed by seconds
+	return os.date(formatString, msg)
+end

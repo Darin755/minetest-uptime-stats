@@ -1,4 +1,8 @@
 ## Mod To Do list
 
-- Bug test
- - implement security restrictions
+ - add uptime
+ - add gui for configuring 
+ - add get time
+ - add get players
+ - add player cordinates
+ - implement security
