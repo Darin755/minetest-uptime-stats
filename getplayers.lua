@@ -7,10 +7,10 @@ local on_digiline_receive = function (pos, _, channel, msg)
     	local playerString = ""
     	local playerTable = minetest.get_connected_players()
     	for _, player in ipairs(playerTable) do
-    		if not playerString  == "" then
-    			playerString = playerString.." "..player:get_player_name()
-    		else 
+    		if playerString  == "" then
     			playerString = player:get_player_name()
+    		else 
+    			playerString = playerString.." "..player:get_player_name()
     		end
     	end
         digilines.receptor_send(pos, digilines.rules.default, receiveChannel, playerString) -- send time
