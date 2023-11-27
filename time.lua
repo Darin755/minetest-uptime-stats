@@ -5,7 +5,8 @@ local on_digiline_receive = function (pos, _, channel, msg)
 	local receiveChannel = minetest.get_meta(pos):get_string("channel")
     if channel == receiveChannel and msg.command == getCommand then -- check if it is the right message and channel
         local time = os.time()
-        digilines.receptor_send(pos, digilines.rules.default, receiveChannel, {seconds = time, adjustment = msg.adjustment} ) -- send and adjustment to next node
+        time = time + (msg.adjustment * 86400)
+        digilines.receptor_send(pos, digilines.rules.default, receiveChannel, time ) -- send and adjustment to next node
     end
 end
 

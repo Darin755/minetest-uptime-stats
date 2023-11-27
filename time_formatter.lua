@@ -6,11 +6,8 @@ local on_digiline_receive = function (pos, _, channel, msg)
 	local receiveChannel = minetest.get_meta(pos):get_string("channel")
 	local formatString = minetest.get_meta(pos):get_string("formatString")
     if channel == receiveChannel then -- check if it is the right message and channel
-    	if not (tonumber(msg.seconds) == nil) then -- validate input for the actual seconds
-	    	local time = math.round(msg.seconds) -- round to the nearest second
-      if not (tonumber(msg.adjustment) == nil && time ~= nil) then
-        adjustment = math.round(msg.adjustment)
-        time = time + (adjustment * 86400)
+    	if not (tonumber(msg) == nil) then -- validate input for the actual seconds
+	    	local time = math.round(msg) -- round to the nearest second
     local timeMessage = processString(formatString, time)
 		digilines.receptor_send(pos, digilines.rules.default, receiveChannel, timeMessage) -- send formatted version
 	end
