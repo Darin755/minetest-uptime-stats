@@ -1,6 +1,6 @@
 local on_digiline_receive = function (pos, _, channel, msg) 
 	local receiveChannel = minetest.get_meta(pos):get_string("channel")
-    if channel == receiveChannel then -- check if it is the right message and channel
+    if (type(msg) == "string") and (channel == receiveChannel) then -- check if it is the right message and channel
     	local players = {}
     	local string = ""
     	for w in msg:gmatch("%w+") do
