@@ -5,12 +5,16 @@ local getCommand = "GET"
 local on_digiline_receive = function (pos, _, channel, msg) 
 	local receiveChannel = minetest.get_meta(pos):get_string("channel")
 	local formatString = minetest.get_meta(pos):get_string("formatString")
+  local timeZone = minetest.get_meta(pos):get_string("timeZone")
     if channel == receiveChannel then -- check if it is the right message and channel
     	if not (tonumber(msg) == nil) then -- validate input for the actual seconds
 	    	local time = math.round(msg) -- round to the nearest second
+      if not (tonumber(timeZone) == nil) then --validate input for time zone before it processes them
+        time = time + (math.round(tonumber(timeZone)) * 86400)
+      end
     local timeMessage = processString(formatString, time)
 		digilines.receptor_send(pos, digilines.rules.default, receiveChannel, timeMessage) -- send formatted version
-	end
+      end
     end
 end
 
@@ -36,17 +40,21 @@ minetest.register_node("stats:time_formatter_block", { --register the node
 		local meta = minetest.get_meta(pos)
 		meta:set_string("channel", "")
 		meta:set_string("formatString", "%H:%M")
+    meta:set_string("timeZone", "")
 		meta:set_string("formspec",
 				"size[10,10]"..
 				"label[4,2;Channel]".. -- this is just a text label
                 "field[2,3;6,1;chnl;;${channel}]".. -- this is just the text entry box 
                 		"label[4,4;format string]".. -- this is just a text label
                 "field[2,5;6,1;formatString;;${formatString}]".. -- this is just the format string
-                "button_exit[4,6;2,1;exit;Save]") -- submit button, triggers on_receive_fields
+                    "label[4,6;timeZone]".. -- Label for the time zone.
+                "field[2,7;6,1;timeZone;;${timeZone}]"..
+                "button_exit[4,8;2,1;exit;Save]") -- submit button, triggers on_receive_fields
 	end,
     on_receive_fields = function(pos, formname, fields, player) -- to do: implement security
         minetest.get_meta(pos):set_string("channel", fields.chnl)
         minetest.get_meta(pos):set_string("formatString", fields.formatString)
+        minetest.get_meta(pos):set_string("timeZone", fields.timeZone)
     end
 })
 
