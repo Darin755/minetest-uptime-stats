@@ -9,10 +9,11 @@ local on_digiline_receive = function (pos, _, channel, msg)
     if channel == receiveChannel then -- check if it is the right message and channel
     	if not (tonumber(msg) == nil) then -- validate input for the actual seconds
 	    	local time = math.round(msg) -- round to the nearest second
-      if not (tonumber(timeZone) == nil) then --validate input for time zone before it processes them
-        time = time + (math.round(tonumber(timeZone)) * 86400)
-      end
-    local timeMessage = processString(formatString, time)
+        local adjustment = tonumber(timeZone)
+        if (adjustment ~= nil) then
+          time = time + (adjustment * 3600)
+        end
+    local timeMessage = processString(formatString, tonumber(time))
 		digilines.receptor_send(pos, digilines.rules.default, receiveChannel, timeMessage) -- send formatted version
       end
     end
@@ -40,7 +41,7 @@ minetest.register_node("stats:time_formatter_block", { --register the node
 		local meta = minetest.get_meta(pos)
 		meta:set_string("channel", "")
 		meta:set_string("formatString", "%H:%M")
-    meta:set_string("timeZone", "")
+    meta:set_string("timeZone", "0")
 		meta:set_string("formspec",
 				"size[10,10]"..
 				"label[4,2;Channel]".. -- this is just a text label
@@ -58,6 +59,6 @@ minetest.register_node("stats:time_formatter_block", { --register the node
     end
 })
 
-function processString(formatString, msg)   -- format specifer followed by seconds
-	return os.date(formatString, msg)
+function processString(formatString, inputTime)   -- format specifer followed by seconds
+	return os.date(formatString, inputTime)
 end
