@@ -32,7 +32,9 @@ minetest.register_node("stats:position_block", { --register the node
 			action = on_digiline_receive --on message recieved
 		},
 	},
-    after_place_node = function(pos, placer)
+	
+	--sets up the channel selection UI after the block is placed
+    after_place_node = function(pos, placer) 
 		local meta = minetest.get_meta(pos)
 		meta:set_string("channel", "")
 		meta:set_string("formspec",
@@ -49,10 +51,10 @@ minetest.register_node("stats:position_block", { --register the node
 
 --gets player's current position when function is called
 function get_playerpos(player)
-	local playerobj = minetest.get_player_by_name(player)
-	if playerobj then
+	local playerobj = minetest.get_player_by_name(player) --sets playerobj to the selected player
+	if playerobj then --if a player was found, return the player's coordinates
 		return vector.round(playerobj:get_pos())
-	else 
+	else --if no player was found, send the following message
 		return "not found"
 	end
 end
