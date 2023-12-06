@@ -1,0 +1,5 @@
+Credits/Contributions
+
+Darin Rawson: Uptime, uptime format, and the completion of the proper player list blocks, as well as the framework which the other blocks were built from.
+Aaron Kalford: Time and Time formatting blocks.
+Jackson Rugh: Player coordinate tracking blocks, additional research on minetest functions.
