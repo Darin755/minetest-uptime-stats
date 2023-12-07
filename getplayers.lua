@@ -18,7 +18,7 @@ local on_digiline_receive = function (pos, _, channel, msg)
 end
 
 
-minetest.register_node("stats:players_block", { --register the node
+minetest.register_node(":stats:players_block", { --register the node
 	description = "This block gets all players as a string",
 	tiles = {
 		"stats_black.png",
