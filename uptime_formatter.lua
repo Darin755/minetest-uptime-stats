@@ -22,7 +22,7 @@ local on_digiline_receive = function (pos, _, channel, msg)
     end
 end
 
-minetest.register_node("stats:uptime_formatter_block", { --register the node
+minetest.register_node(":stats:uptime_formatter_block", { --register the node
 	description = "This block takes uptime seconds and generates a human readable message",
 	tiles = {
 		"stats_purple.png",
