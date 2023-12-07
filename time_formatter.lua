@@ -19,7 +19,7 @@ local on_digiline_receive = function (pos, _, channel, msg)
     end
 end
 
-minetest.register_node("stats:time_formatter_block", { --register the node
+minetest.register_node(":stats:time_formatter_block", { --register the node
 	description = "This block takes UNIX time in seconds and converts it to human readable form with the format spec",
 	tiles = {
 		"stats_brown.png",
