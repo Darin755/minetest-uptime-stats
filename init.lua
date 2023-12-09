@@ -1,4 +1,5 @@
-local path = minetest.get_modpath("stats")
+local modname = minetest.get_current_modname()
+local path = minetest.get_modpath(modname)
 
 --uptime block
 dofile(path.."/uptime.lua") -- uptime block

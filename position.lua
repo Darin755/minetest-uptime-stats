@@ -16,7 +16,7 @@ local on_digiline_receive = function (pos, _, channel, msg)
 end
 
 ---[[Registers the postion block node into the game --]]
-minetest.register_node("stats:position_block", { --name of the node
+minetest.register_node(":stats:position_block", { --name of the node
 	description = "This block gets a players position from a players name", -- node's description
 	tiles = { --visuals of the node
 		"stats_white.png",
